@@ -14,6 +14,49 @@ This tool is designed specifically for game developers and VFX artists who need 
 * **Multi-Pass Ping-Pong Blurring:** Implements a highly optimized FBO ping-pong rendering technique to achieve smooth, large-radius blurs without tanking performance. 
 * **JSON Export:** Instantly copy the exact mathematical state of your texture to the clipboard for ingestion into your game engine.
 
+## Use-cases
+Cellular (Voronoi) noise is essentially the Swiss Army knife of procedural texturing. Because your generator outputs mathematically precise grayscale data (along with your multi-color additions), you aren't just creating "pictures" to slap onto a wall. You are generating data maps—Height, Roughness, Emission, and Alpha masks—that tell a 3D material exactly how to interact with light and geometry.
+
+### 1. Environment & Terrain (Displacement & Bump Maps)
+By feeding the grayscale output of your generator into the height or displacement channel of a 3D material, you actually alter the physical geometry (or the illusion of it) in the engine.
+
+* **Cracked Mud / Desert Earth:** * *Settings:* Euclidean, Invert OFF, high Sharpness, low/no Blur.
+* *Usage:* The dark lines become deep crevices, and the white centers become the flat plates of dry dirt.
+
+* **Cobblestone Streets & Mosaics:** * *Settings:* Euclidean, Multi-Color ON, moderate Scale.
+* *Usage:* Use the multi-color output for the Albedo (Base Color), and the grayscale output as a normal/bump map to make the mortar between the stones look recessed.
+
+* **Organic Surfaces (Leather, Reptile Scales, Sponge):**
+* *Settings:* Euclidean, Invert ON, slight Jitter, very slight Blur.
+* *Usage:* Inverted Voronoi creates overlapping, bulbous spheres instead of flat cells. This is perfect for the bumpy surface of a dragon's skin or the porous surface of a sea sponge.
+
+### 2. VFX & Magic (Emission & Alpha Maps)
+This is where your **Edge Fade** and **Manhattan Distance** knobs really shine. By mapping the texture to the Emission (glow) and Alpha (transparency) channels of an unlit shader, you get incredibly cheap, dynamic effects.
+
+* **Sci-Fi Energy Shields / Holograms:**
+* *Settings:* Manhattan Distance, Invert OFF, neon Base Tint, sharp Power.
+* *Usage:* Manhattan distance gives you that techy, angular, crystalline look. Map this to a spherical mesh, crank up the emission in your game engine, and pan the UV coordinates over time to make the shield energy "flow."
+
+* **Water Caustics (Pool Reflections):**
+* *Settings:* Euclidean, Invert ON, high Blur Passes, sharp Power.
+* *Usage:* If you look at the bottom of a swimming pool, the dancing light patterns are literally just inverted, blurred Voronoi noise.  You can project this texture over your underwater environment as a light decal.
+
+* **Magic Projectiles & Sparks:**
+* *Settings:* Manhattan or Euclidean, Invert ON, Edge Fade > 0.5.
+* *Usage:* The edge fade creates a perfect circular mask, making this a ready-to-use particle billboard. Spawn hundreds of these on camera-facing quads to create a burst of magical energy or floating embers.
+
+### 3. Surface Imperfections (Roughness Maps)
+Nothing in the real world is perfectly smooth or clean. Using noise to break up how light reflects off a surface is the secret to photorealism.
+
+* **Hammered Metal / Dented Armor:**
+* *Settings:* Euclidean, Invert ON, very high Scale (lots of cells), soft Blur.
+* *Usage:* Feed this into the Roughness or Normal map of a metallic material. It will make the metal look like it has been repeatedly struck by a blacksmith's hammer.
+
+* **Stained Glass Windows:**
+* *Settings:* Manhattan or Euclidean, Multi-Color ON, Jitter 0 (perfect grid) or slightly jittered.
+* *Usage:* Map the base colors to the glass, and use the dark grid lines as the metallic lead framing (using a metallic map).
+
+
 ## 🧠 Technical Details
 
 This project is inspired by the highly optimized software-rendering techniques used in the demoscene (e.g., Farbrausch's Werkkzeug), but adapted for modern GPU architecture.
