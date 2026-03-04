@@ -3,7 +3,11 @@ A lightning-fast, GPU-accelerated procedural texture generator built with TypeSc
 
 This tool is designed specifically for game developers and VFX artists who need to generate highly customizable, seamless, and performant textures for particle systems, shields, terrain foundations, and UI elements. Instead of saving massive image files, this tool outputs a lightweight JSON configuration that your game engine can use to reproduce the texture procedurally at runtime.
 
-### Warning: THIS IS A ONE-HOUR AI SLOP!
+### Warning: THIS IS A ~~ONE~~2-HOUR AI SLOP!
+
+<p align="center">
+  <img src=".github/example.png" width="350" title="">
+</p>
 
 ## 🚀 Features
 
