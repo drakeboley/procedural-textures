@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Procedural Texture Generator</title>
+    <style>
+        body { font-family: sans-serif; display: flex; gap: 20px; padding: 20px; background: #1e1e1e; color: #eee; }
+        canvas { border: 1px solid #444; background: #222; box-shadow: 0 4px 10px rgba(0,0,0,0.5); background-image: linear-gradient(45deg, #333 25%, transparent 25%), linear-gradient(-45deg, #333 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #333 75%), linear-gradient(-45deg, transparent 75%, #333 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; }
+        .controls { display: flex; flex-direction: column; gap: 15px; width: 350px; }
+        .control-group { display: flex; flex-direction: column; }
+        label { margin-bottom: 5px; font-weight: bold; font-size: 14px; }
+        textarea { height: 150px; background: #2d2d2d; color: #a5d6ff; padding: 10px; font-family: monospace; border: none; }
+        button { padding: 8px; cursor: pointer; background: #007acc; color: white; border: none; font-weight: bold; }
+        button:hover { background: #0098ff; }
+    </style>
+</head>
+<body>
+
+    <canvas id="preview-canvas" width="512" height="512"></canvas>
+
+    <div class="controls">
+        <h2>Texture Parameters</h2>
+        
+        <div class="control-group" style="flex-direction: row; gap: 10px;">
+            <div>
+                <label for="width">Width</label><br>
+                <input type="number" id="width" value="512" step="64" style="width: 80px;">
+            </div>
+            <div>
+                <label for="height">Height</label><br>
+                <input type="number" id="height" value="512" step="64" style="width: 80px;">
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label for="scale">Cell Scale: <span id="scale-val">3.0</span></label>
+            <input type="range" id="scale" min="1.0" max="20.0" step="0.1" value="3.0">
+        </div>
+
+        <div class="control-group">
+            <label for="jitter">Jitter (Randomness): <span id="jitter-val">1.0</span></label>
+            <input type="range" id="jitter" min="0.0" max="1.0" step="0.01" value="1.0">
+        </div>
+
+        <div class="control-group">
+            <label for="power">Sharpness (Power): <span id="power-val">2.0</span></label>
+            <input type="range" id="power" min="0.1" max="10.0" step="0.1" value="2.0">
+        </div>
+
+        <div class="control-group">
+            <label for="edgeFade">Edge Fade (Vignette): <span id="edgeFade-val">0.5</span></label>
+            <input type="range" id="edgeFade" min="0.0" max="1.0" step="0.01" value="0.5">
+        </div>
+
+        <div class="control-group">
+            <label for="blurRadius">Blur Radius: <span id="blurRadius-val">0</span></label>
+            <input type="range" id="blurRadius" min="0" max="20" step="1" value="0">
+        </div>
+
+        <div class="control-group">
+            <label for="blurPasses">Blur Passes (Smoothness): <span id="blurPasses-val">1</span></label>
+            <input type="range" id="blurPasses" min="1" max="5" step="1" value="1">
+        </div>
+
+        <div class="control-group">
+            <label for="color">Base Tint</label>
+            <input type="color" id="color" value="#3399ff">
+        </div>
+
+        <div class="control-group">
+            <label for="distanceType">Distance Shape</label>
+            <select id="distanceType">
+                <option value="0">Euclidean (Circles/Orbs)</option>
+                <option value="1">Manhattan (Diamonds/Crystals)</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="invert" checked>
+                Invert Noise (Great for bubbles/dots)
+            </label>
+        </div>
+
+        <div class="control-group">
+            <label>
+                <input type="checkbox" id="multiColor">
+                Multi-Color (Stone / Stained Glass)
+            </label>
+        </div>
+
+        <h2>JSON Template</h2>
+        <textarea id="json-output" readonly></textarea>
+        <button id="copy-btn">Copy to Clipboard</button>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
